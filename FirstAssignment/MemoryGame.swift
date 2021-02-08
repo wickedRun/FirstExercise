@@ -10,7 +10,7 @@ import Foundation
 struct MemoryGame<CardContent> {
     var cards: Array<Card>
     
-    mutating func choose(card: Card) {  // self.속성을 변경하려할때 mutating을 써줘야한다.
+    mutating func choose(card: Card) {  // self.속성을 변경하려할때 mutating을 써줘야한다. 값 타입이므로 self.으로 접근해야하며 mutating을 사용하여 바꾸어야함.
         print("card chosen: \(card)")
         let chosenIndex: Int = self.index(of: card)
         self.cards[chosenIndex].isFaceUp = !self.cards[chosenIndex].isFaceUp
