@@ -10,17 +10,15 @@ import SwiftUI
 struct ContentView: View {
     var viewModel: EmojiMemoryGame
     var body: some View {
-        let myFont: Font = viewModel.cards.count > 4 ? .title : .largeTitle
         return HStack {
             ForEach(viewModel.cards) { card in
                 CardView(card: card).onTapGesture {
                     viewModel.choose(card: card)
-                }
+                }.aspectRatio(2/3, contentMode: .fit)
             }
         }
             .padding()
             .foregroundColor(.orange)
-            .font(myFont)
     }
 }
 
@@ -28,16 +26,23 @@ struct CardView: View {
     var card: MemoryGame<String>.Card
 
     var body: some View {
-        ZStack {
-            if card.isFaceUp {
-                RoundedRectangle(cornerRadius: 10.0).stroke(lineWidth: 3)
-                RoundedRectangle(cornerRadius: 10.0).fill(Color.white)
-                Text(card.content)
-            } else {
-                RoundedRectangle(cornerRadius: 10.0).fill()
+        GeometryReader { geometry in
+            ZStack {
+                if card.isFaceUp {
+                    RoundedRectangle(cornerRadius: cornerRadious).stroke(lineWidth: edgeLineWidth)
+                    RoundedRectangle(cornerRadius: cornerRadious).fill(Color.white)
+                    Text(card.content)
+                } else {
+                    RoundedRectangle(cornerRadius: cornerRadious).fill()
+                }
             }
-        }.aspectRatio(CGSize(width: 2, height: 3), contentMode: .fit)
+            .font(Font.system(size: min(geometry.size.width, geometry.size.height) * fontSizeFactor))
+        }
     }
+    
+    let fontSizeFactor: CGFloat = 0.75
+    let edgeLineWidth: CGFloat = 3
+    let cornerRadious: CGFloat = 10
 }
 
 struct ContentView_Previews: PreviewProvider {
