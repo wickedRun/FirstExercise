@@ -10,14 +10,25 @@ import SwiftUI
 struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame  // 이렇게 하면 objectWillChange.send 될때마다 뷰를 다시그린다.
     var body: some View {
-        Grid(viewModel.cards) { card in
-            CardView(card: card).onTapGesture {
-                viewModel.choose(card: card)
+        VStack{
+            HStack{
+                Button("Restart"){
+                    viewModel.restartMemoryGame()
+                }.frame(width: 175, alignment: .leading)
+                Text(viewModel.theme.name)
+                Spacer()
+                Text("\(viewModel.score)")
             }
+            Grid(viewModel.cards) { card in
+                CardView(card: card).onTapGesture {
+                    viewModel.choose(card: card)
+                }
                 .padding(5)
-        }
+            }
+            .navigationBarTitle(viewModel.theme.name)
             .padding()
-            .foregroundColor(.orange)
+            .foregroundColor(viewModel.theme.color)
+        }
     }
 }
 
@@ -72,6 +83,6 @@ struct CardView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        EmojiMemoryGameView(viewModel: EmojiMemoryGame())
+        EmojiMemoryGameView(viewModel: EmojiMemoryGame(theme: EmojiMemoryGame.Theme.sports))
     }
 }

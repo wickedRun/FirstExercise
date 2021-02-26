@@ -8,13 +8,35 @@
 import SwiftUI
 
 class EmojiMemoryGame: ObservableObject {   // ObservableObject 프로토콜은 implements 하는 것이 class여야 한다.
-    @Published private var model: MemoryGame<String> = EmojiMemoryGame.createMemoryGame()   // 맨 앞에 저건 Property Wrapper
+    struct Theme {
+        let name: String
+        let emojis: [String]
+        let color: Color
+        
+        static let halloween = Theme(name: "Halloween", emojis: ["👻", "🎃", "🕷"], color: Color.orange)
+        static let animals = Theme(name: "Animals", emojis: ["🐼", "🐔", "🦄"], color: Color.pink)
+        static let sports = Theme(name: "Sports", emojis: ["🏀", "🏈", "⚾"], color: Color.blue)
+        static let faces = Theme(name: "Halloween", emojis: ["😀", "😢", "😉"], color: Color.yellow)
+    }
+    var score: Int {
+        model.score
+    }
+    var theme: Theme
+    @Published private var model: MemoryGame<String> //EmojiMemoryGame.createMemoryGame()   // 맨 앞에 저건 Property Wrapper
     
-    static func createMemoryGame() -> MemoryGame<String> {
-        let emojis = ["👻", "🎃", "🕷"]
-        return MemoryGame<String>(numberOfPairsOfCards: emojis.count) { pairIndex in
-            emojis[pairIndex]
-        }
+    init(theme: Theme) {
+        self.theme = theme
+        self.model = MemoryGame<String>(numberOfPairsOfCards: theme.emojis.count) { theme.emojis[$0] }
+    }
+    
+//    func createMemoryGame(theme: Theme) -> MemoryGame<String> {
+//        return MemoryGame<String>(numberOfPairsOfCards: theme.emojis.count) { theme.emojis[$0] }
+//    }
+    
+    func restartMemoryGame() {
+        let themes = [Theme.halloween, Theme.animals, Theme.sports, Theme.faces]
+        let theme: Theme = themes.randomElement() ?? themes[0]
+        model = MemoryGame<String>(numberOfPairsOfCards: theme.emojis.count) { theme.emojis[$0] }
     }
     
 //    var objectWillChange: ObservableObjectPublisher 이게 없어도 밑에 objectWillChange 에러 안남.

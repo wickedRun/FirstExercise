@@ -10,6 +10,8 @@ import Foundation
 struct MemoryGame<CardContent> where CardContent: Equatable {
     var cards: Array<Card>
     
+    var score: Int
+    
     var indexOfTheOneAndOnlyFaceUpCard: Int? {
         get {
             cards.indices.filter { cards[$0].isFaceUp }.only
@@ -47,6 +49,13 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                 if cards[chosenIndex].content == cards[potentialMatchIndex].content {
                     cards[chosenIndex].isMatched = true
                     cards[potentialMatchIndex].isMatched = true
+                    score += 2
+                } else {
+                    if cards[chosenIndex].isWatched || cards[potentialMatchIndex].isWatched {
+                        score -= 1
+                    }
+                    cards[chosenIndex].isWatched = true
+                    cards[potentialMatchIndex].isWatched = true
                 }
 //                indexOfTheOneAndOnlyFaceUpCard = nil // 이 value는 getset을 통해서 앱에서 현재 값으로 sync된다. for문을 돌아서 계산된 값이 설정됨.
                 self.cards[chosenIndex].isFaceUp = true
@@ -57,7 +66,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
 //                }
                 indexOfTheOneAndOnlyFaceUpCard = chosenIndex
             }
-//            self.cards[chosenIndex].isFaceUp = true 이 줄이 if let 구문 밑으로 옮기.
+//            self.cards[chosenIndex].isFaceUp = true 이 줄이 if let 구문 밑으로 옮김.
         }
     }
     
@@ -73,12 +82,14 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
 //    }
     
     init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {
+        score = 0
         cards = Array<Card>()
         for pairIndex in 0..<numberOfPairsOfCards {
             let content = cardContentFactory(pairIndex)
             cards.append(Card(content: content, id: pairIndex*2))
             cards.append(Card(content: content, id: pairIndex*2+1))
         }
+        cards.shuffle()
     }
     
     struct Card: Identifiable {
@@ -86,5 +97,6 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         var isMatched: Bool = false
         var content: CardContent
         var id: Int
+        var isWatched: Bool = false
     }
 }

@@ -11,7 +11,7 @@ import SwiftUI
 struct FirstAssignmentApp: App {
     var body: some Scene {
         WindowGroup {
-            let game = EmojiMemoryGame()
+            let game = EmojiMemoryGame(theme: EmojiMemoryGame.Theme.sports)
             EmojiMemoryGameView(viewModel: game)
         }
     }
