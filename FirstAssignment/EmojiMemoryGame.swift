@@ -10,7 +10,7 @@ import SwiftUI
 class EmojiMemoryGame: ObservableObject {   // ObservableObject 프로토콜은 implements 하는 것이 class여야 한다.
     @Published private var model: MemoryGame<String> = EmojiMemoryGame.createMemoryGame()   // 맨 앞에 저건 Property Wrapper
     
-    static func createMemoryGame() -> MemoryGame<String> {
+    private static func createMemoryGame() -> MemoryGame<String> {
         let emojis = ["👻", "🎃", "🕷"]
         return MemoryGame<String>(numberOfPairsOfCards: emojis.count) { pairIndex in
             emojis[pairIndex]
