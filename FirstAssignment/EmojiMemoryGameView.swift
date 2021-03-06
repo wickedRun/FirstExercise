@@ -10,14 +10,25 @@ import SwiftUI
 struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame  // 이렇게 하면 objectWillChange.send 될때마다 뷰를 다시그린다.
     var body: some View {
-        Grid(viewModel.cards) { card in
-            CardView(card: card).onTapGesture {
-                viewModel.choose(card: card)
+        VStack {
+            Grid(viewModel.cards) { card in
+                CardView(card: card).onTapGesture {
+                    withAnimation(.linear(duration: 0.75)) {
+//                    withAnimation(.linear(duration: 2)) { // 동작을 확인할 때 너무 빠르면 보기 힘들기 때문에 duration을 2로 동작하게하여 확인 쉽게함.
+                        viewModel.choose(card: card)
+                    }
+                }
+                    .padding(5)
             }
-                .padding(5)
+                .padding()
+                .foregroundColor(.orange)
+            Button(action: {
+                withAnimation(.easeInOut) {
+//                withAnimation(.easeInOut(duration: 2)) {  // line 17과 동일.
+                    viewModel.resetGame()
+                }
+            }, label: { Text("New Game") })     // red color인 이유는 화면에 보여지기 때문에. 이것에 대해 더 알아보려면 localizedString 도큐멘트 참조.
         }
-            .padding()
-            .foregroundColor(.orange)
     }
 }
 
@@ -26,24 +37,22 @@ struct CardView: View {
 
     var body: some View {
         GeometryReader { geometry in
-            self.body(for: geometry.size)   // self. 빼도 된다.
+            self.body(for: geometry.size)
         }
     }
         
-    @ViewBuilder    // <- 이거로 인해 interpret as list of Views (list of Views로 interpret된다.)
+    @ViewBuilder
     private func body(for size: CGSize) -> some View {
         if card.isFaceUp || !card.isMatched {
             ZStack {
                 Pie(startAngle: Angle.degrees(0-90), endAngle: Angle.degrees(110-90),clockwise: true).padding(5).opacity(0.4)
-                // Pie places between Rectangle and emoji
-                // 실제로 반대방향으로 갈지라도 clockwise는 true이여야 한다.
                 Text(card.content)
                     .font(.system(size: fontSize(for: size)))
                     .rotationEffect(Angle.degrees(card.isMatched ? 360 : 0))
                     .animation(card.isMatched ? Animation.linear(duration: 1).repeatForever(autoreverses: false) : .default)
             }
-            //        .modifier(Cardify(isFaceUp: card.isFaceUp)) // View에 extension을 추가하기전에 만든 ViewModifier(struct)를 호출하는 방법
-            .cardify(isFaceUp: card.isFaceUp)         // View에 extension을 추가하여 호출하는 방법.
+            .cardify(isFaceUp: card.isFaceUp)
+            .transition(.scale)
         }
     }
     

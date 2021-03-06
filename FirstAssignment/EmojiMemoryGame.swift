@@ -31,4 +31,8 @@ class EmojiMemoryGame: ObservableObject {   // ObservableObject 프로토콜은 
 //        objectWillChange.send()  // 위에 @Published를 적으면 이거 안해줘도 됨. 써도 되긴 한다.
         model.choose(card: card)
     }
+    
+    func resetGame () {
+        model = EmojiMemoryGame.createMemoryGame()
+    }
 }
