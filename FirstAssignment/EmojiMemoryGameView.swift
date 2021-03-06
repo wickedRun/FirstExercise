@@ -39,6 +39,8 @@ struct CardView: View {
                 // 실제로 반대방향으로 갈지라도 clockwise는 true이여야 한다.
                 Text(card.content)
                     .font(.system(size: fontSize(for: size)))
+                    .rotationEffect(Angle.degrees(card.isMatched ? 360 : 0))
+                    .animation(card.isMatched ? Animation.linear(duration: 1).repeatForever(autoreverses: false) : .default)
             }
             //        .modifier(Cardify(isFaceUp: card.isFaceUp)) // View에 extension을 추가하기전에 만든 ViewModifier(struct)를 호출하는 방법
             .cardify(isFaceUp: card.isFaceUp)         // View에 extension을 추가하여 호출하는 방법.
