@@ -1,6 +1,6 @@
 //
 //  EmojiMemoryGameView.swift
-//  FirstAssignment
+//  Memorize
 //
 //  Created by wickedRun on 2021/02/04.
 //
