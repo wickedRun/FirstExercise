@@ -15,8 +15,6 @@
 		28DB76A325EF7C9F009F2F11 /* Cardify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DB76A225EF7C9F009F2F11 /* Cardify.swift */; };
 		28DD3A6925CC04F800C641BE /* FirstAssignmentApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DD3A6825CC04F800C641BE /* FirstAssignmentApp.swift */; };
 		28DD3A6B25CC04F800C641BE /* EmojiMemoryGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DD3A6A25CC04F800C641BE /* EmojiMemoryGameView.swift */; };
-		28DD3A6D25CC04FA00C641BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28DD3A6C25CC04FA00C641BE /* Assets.xcassets */; };
-		28DD3A7025CC04FA00C641BE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28DD3A6F25CC04FA00C641BE /* Preview Assets.xcassets */; };
 		28F70A3025CC652500A6C1F8 /* MemoryGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F70A2F25CC652500A6C1F8 /* MemoryGame.swift */; };
 		28F70A3325CC669C00A6C1F8 /* EmojiMemoryGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F70A3225CC669C00A6C1F8 /* EmojiMemoryGame.swift */; };
 /* End PBXBuildFile section */
@@ -28,7 +26,7 @@
 		28B38CCC25D18202002D7E62 /* Array+Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Identifiable.swift"; sourceTree = "<group>"; };
 		28DB769F25ED77F4009F2F11 /* Pie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pie.swift; sourceTree = "<group>"; };
 		28DB76A225EF7C9F009F2F11 /* Cardify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cardify.swift; sourceTree = "<group>"; };
-		28DD3A6525CC04F800C641BE /* FirstAssignment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FirstAssignment.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		28DD3A6525CC04F800C641BE /* Memorize.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Memorize.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		28DD3A6825CC04F800C641BE /* FirstAssignmentApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstAssignmentApp.swift; sourceTree = "<group>"; };
 		28DD3A6A25CC04F800C641BE /* EmojiMemoryGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMemoryGameView.swift; sourceTree = "<group>"; };
 		28DD3A6C25CC04FA00C641BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -52,7 +50,7 @@
 		28DD3A5C25CC04F800C641BE = {
 			isa = PBXGroup;
 			children = (
-				28DD3A6725CC04F800C641BE /* FirstAssignment */,
+				28DD3A6725CC04F800C641BE /* Memorize */,
 				28DD3A6625CC04F800C641BE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -60,12 +58,12 @@
 		28DD3A6625CC04F800C641BE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				28DD3A6525CC04F800C641BE /* FirstAssignment.app */,
+				28DD3A6525CC04F800C641BE /* Memorize.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		28DD3A6725CC04F800C641BE /* FirstAssignment */ = {
+		28DD3A6725CC04F800C641BE /* Memorize */ = {
 			isa = PBXGroup;
 			children = (
 				28DB769F25ED77F4009F2F11 /* Pie.swift */,
@@ -82,7 +80,7 @@
 				28DD3A7125CC04FA00C641BE /* Info.plist */,
 				28DD3A6E25CC04FA00C641BE /* Preview Content */,
 			);
-			path = FirstAssignment;
+			path = Memorize;
 			sourceTree = "<group>";
 		};
 		28DD3A6E25CC04FA00C641BE /* Preview Content */ = {
@@ -96,9 +94,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		28DD3A6425CC04F800C641BE /* FirstAssignment */ = {
+		28DD3A6425CC04F800C641BE /* Memorize */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 28DD3A7425CC04FA00C641BE /* Build configuration list for PBXNativeTarget "FirstAssignment" */;
+			buildConfigurationList = 28DD3A7425CC04FA00C641BE /* Build configuration list for PBXNativeTarget "Memorize" */;
 			buildPhases = (
 				28DD3A6125CC04F800C641BE /* Sources */,
 				28DD3A6225CC04F800C641BE /* Frameworks */,
@@ -108,9 +106,9 @@
 			);
 			dependencies = (
 			);
-			name = FirstAssignment;
+			name = Memorize;
 			productName = FirstAssignment;
-			productReference = 28DD3A6525CC04F800C641BE /* FirstAssignment.app */;
+			productReference = 28DD3A6525CC04F800C641BE /* Memorize.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -127,7 +125,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 28DD3A6025CC04F800C641BE /* Build configuration list for PBXProject "FirstAssignment" */;
+			buildConfigurationList = 28DD3A6025CC04F800C641BE /* Build configuration list for PBXProject "Memorize" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -140,7 +138,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				28DD3A6425CC04F800C641BE /* FirstAssignment */,
+				28DD3A6425CC04F800C641BE /* Memorize */,
 			);
 		};
 /* End PBXProject section */
@@ -150,8 +148,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28DD3A7025CC04FA00C641BE /* Preview Assets.xcassets in Resources */,
-				28DD3A6D25CC04FA00C641BE /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,16 +296,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"FirstAssignment/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Memorize/Preview Content\"";
 				DEVELOPMENT_TEAM = U6Q9G3RA4Y;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = FirstAssignment/Info.plist;
+				INFOPLIST_FILE = Memorize/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.wickedrun.FirstAssignment;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wickedrun.Memorize;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -322,16 +318,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"FirstAssignment/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Memorize/Preview Content\"";
 				DEVELOPMENT_TEAM = U6Q9G3RA4Y;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = FirstAssignment/Info.plist;
+				INFOPLIST_FILE = Memorize/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.wickedrun.FirstAssignment;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wickedrun.Memorize;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -341,7 +337,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		28DD3A6025CC04F800C641BE /* Build configuration list for PBXProject "FirstAssignment" */ = {
+		28DD3A6025CC04F800C641BE /* Build configuration list for PBXProject "Memorize" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				28DD3A7225CC04FA00C641BE /* Debug */,
@@ -350,7 +346,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		28DD3A7425CC04FA00C641BE /* Build configuration list for PBXNativeTarget "FirstAssignment" */ = {
+		28DD3A7425CC04FA00C641BE /* Build configuration list for PBXNativeTarget "Memorize" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				28DD3A7525CC04FA00C641BE /* Debug */,
