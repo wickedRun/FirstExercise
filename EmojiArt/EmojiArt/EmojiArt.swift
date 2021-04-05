@@ -7,21 +7,18 @@
 
 import Foundation
 
-struct EmojiArt {
-    var backgroundURL: URL?     // Swift library URL is doing that holds a URL like "https://"
-//    private(set) var emojis = [Emoji]() // 하지만 이모지들의 위치와 크기를 바꾸기 때문에 private set은 안된다. 그래서 해결하기 위한 방법은 struct Emoji에 자동 생성 init을 사용하지 않고 따로 적어주어 fileprivate로 만들어주어 이 파일 내에서만 만들 수 있도록 함.
+struct EmojiArt: Codable/*Encodable, Decodable 둘다 conform하는 Codable로 하나로 protocol 작성 Emoji도 동일*/ {
+    var backgroundURL: URL?
     var emojis = [Emoji]()
     
-    struct Emoji: Identifiable {
+    struct Emoji: Identifiable, Codable {
         let text: String
-        var x: Int  // offset from the center
-        var y: Int  // offset from the center
+        var x: Int
+        var y: Int
         var size: Int
         let id: Int
-//        var id = UUID() // UUID is a very unique identifier. Universe Unique ID and It's a little bit of overkill for Emojis in EmojiArt
         
         fileprivate init(text: String, x: Int, y: Int, size: Int, id: Int) {
-            // fileprivate으로 하는 이유는 addEmoji함수에서 호출이 가능하도록 하기 위해.
             self.text = text
             self.x = x
             self.y = y
@@ -29,10 +26,26 @@ struct EmojiArt {
             self.id = id
         }
     }
+    
+    var json: Data? {
+        return try? JSONEncoder().encode(self)
+    }
+    
+    init?(json: Data?) {
+        if json != nil, let newEmojiArt = try? JSONDecoder().decode(EmojiArt.self, from: json!) {
+            self = newEmojiArt
+        } else {
+            return nil
+        }
+    }
+    
+    // Failable init을 만들었기 때문에 기본 init을 따로 만들어 주어야 한다.
+    init() { }
+    
     private var uniqueEmojiId = 0
     
     mutating func addEmoji(_ text: String, x: Int, y: Int, size: Int) {
-        uniqueEmojiId += 1
+        uniqueEmojiId += 1 
         emojis.append(Emoji(text: text, x: x, y: y, size: size, id: uniqueEmojiId))
     }
 }
