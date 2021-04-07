@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct EmojiArt: Codable/*Encodable, Decodable 둘다 conform하는 Codable로 하나로 protocol 작성 Emoji도 동일*/ {
+struct EmojiArt: Codable {
     var backgroundURL: URL?
     var emojis = [Emoji]()
     
-    struct Emoji: Identifiable, Codable {
+    struct Emoji: Identifiable, Codable, Hashable {
         let text: String
         var x: Int
         var y: Int
@@ -39,7 +39,6 @@ struct EmojiArt: Codable/*Encodable, Decodable 둘다 conform하는 Codable로 �
         }
     }
     
-    // Failable init을 만들었기 때문에 기본 init을 따로 만들어 주어야 한다.
     init() { }
     
     private var uniqueEmojiId = 0
