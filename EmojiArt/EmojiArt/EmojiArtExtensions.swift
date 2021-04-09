@@ -218,4 +218,10 @@ extension Set where Element: Identifiable {
             insert(element)
         }
     }
+    
+    mutating func remove(_ element: Element) {
+        if let index = firstIndex(matching: element) {
+            remove(at: index)
+        }
+    }
 }
