@@ -209,3 +209,19 @@ extension UIImage {
         return url
     }
 }
+
+extension Set where Element: Identifiable {
+    mutating func toggleMatching(_ element: Element) {
+        if contains(matching: element) {
+            remove(element)
+        } else {
+            insert(element)
+        }
+    }
+    
+    mutating func remove(_ element: Element) {
+        if let index = firstIndex(matching: element) {
+            remove(at: index)
+        }
+    }
+}
