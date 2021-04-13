@@ -11,18 +11,25 @@ struct EmojiArtDocumentView: View {
     @ObservedObject var document: EmojiArtDocument
     @State private var selectedEmojis: Set<EmojiArt.Emoji> = []
     
+    @State private var chosenPalette: String = ""
+    
     var body: some View {
         VStack {
-            ScrollView(.horizontal) {
-                HStack {
-                    ForEach(EmojiArtDocument.palette.map { String($0) }, id: \.self) { emoji in
-                        Text(emoji)
-                            .font(Font.system(size: defaultEmojiSize))
-                            .onDrag { return NSItemProvider(object: emoji as NSString) }
+            HStack {
+                PaletteChooser(document: document, chosenPalette: $chosenPalette)
+                ScrollView(.horizontal) {
+                    HStack {
+                        ForEach(chosenPalette.map { String($0) }, id: \.self) { emoji in
+                            Text(emoji)
+                                .font(Font.system(size: defaultEmojiSize))
+                                .onDrag { return NSItemProvider(object: emoji as NSString) }
+                        }
                     }
                 }
+                .onAppear { self.chosenPalette = self.document.defaultPalette }
             }
-                .padding(.horizontal)
+//            패딩 삭제.
+//                .padding(.horizontal)
             GeometryReader { geometry in
                 ZStack {
                     Color.white.overlay(
@@ -31,22 +38,30 @@ struct EmojiArtDocumentView: View {
                             .offset(self.panOffset)
                     )
                         .gesture(self.doubleTapToZoom(in: geometry.size))
-                    ForEach(self.document.emojis) { emoji in
-                        Text(emoji.text)
-                            .border(self.isSelected(emoji) ? Color.black : Color.clear)
-                            .font(animatableWithSize: emoji.fontSize * (self.isSelected(emoji) ? steadyStateZoomScale * gestureZoomScale : self.zoomScale))
-                            .position(self.isSelected(emoji)
-                                        ? self.position(for: emoji, in: geometry.size, duringGesture: gestureEmojiOffset)
-                                        : self.position(for: emoji, in: geometry.size, duringGesture: nil))
-                            .gesture(tapForToggle(in: emoji))
-                            .gesture(longTapToRemove(of: emoji))
-                            .gesture(dragToMoveEmoji(of: emoji))
+                    if self.isLoading {
+                        Image(systemName: "hourglass").imageScale(.large).spinning()
+                    } else {
+                        ForEach(self.document.emojis) { emoji in
+                            Text(emoji.text)
+                                .border(self.isSelected(emoji) ? Color.black : Color.clear)
+                                .font(animatableWithSize: emoji.fontSize * (self.isSelected(emoji) ? steadyStateZoomScale * gestureZoomScale : self.zoomScale))
+                                .position(
+                                    self.isSelected(emoji)
+                                    ? self.position(for: emoji, in: geometry.size, duringGesture: gestureEmojiOffset)
+                                    : self.position(for: emoji, in: geometry.size, duringGesture: nil))
+                                .gesture(tapForToggle(in: emoji))
+                                .gesture(longTapToRemove(of: emoji))
+                                .gesture(dragToMoveEmoji(of: emoji))
+                        }
                     }
                 }
                 .clipped()
                 .gesture(self.tapToDeselect(in: geometry.size))
                 .gesture(self.panGesture())
                 .gesture(self.zoomGesture())
+                .onReceive(self.document.$backgroundImage) { image in
+                    self.zoomToFit(image, in: geometry.size)
+                }
                 .edgesIgnoringSafeArea([.horizontal, .bottom])
                 .onDrop(of: ["public.image", "public.text"], isTargeted: nil) { providers, location in
                     var location = geometry.convert(location, from: .global)
@@ -57,6 +72,11 @@ struct EmojiArtDocumentView: View {
                 }
             }
         }
+    }
+    
+    var isLoading: Bool {
+        // emoji만 뜨는 것을 방지하기 위한 변수.
+        document.backgroundURL != nil && document.backgroundImage == nil
     }
     
     @State private var steadyStateZoomScale: CGFloat = 1.0
@@ -125,7 +145,7 @@ struct EmojiArtDocumentView: View {
     }
     
     private func isSelected(_ emoji: EmojiArt.Emoji) -> Bool {
-        self.selectedEmojis.contains(emoji)
+        self.selectedEmojis.contains(matching: emoji)
     }
     
     private func tapForToggle(in emoji: EmojiArt.Emoji) -> some Gesture {
@@ -182,7 +202,7 @@ struct EmojiArtDocumentView: View {
     
     private func drop(providers: [NSItemProvider], at location: CGPoint) -> Bool {
         var found = providers.loadFirstObject(ofType: URL.self) { url in
-            self.document.setBackgroundURL(url)
+            self.document.backgroundURL = url
         }
         if !found {
             found = providers.loadObjects(ofType: String.self) { string in
