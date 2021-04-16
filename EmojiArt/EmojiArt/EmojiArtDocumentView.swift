@@ -13,6 +13,13 @@ struct EmojiArtDocumentView: View {
     
     @State private var chosenPalette: String = ""
     
+    init(document: EmojiArtDocument) {
+        self.document = document
+//        self.chosenPalette = self.document.defaultPalette     // 컴파일 에러는 없지만 실행 x
+        _chosenPalette = State(wrappedValue: self.document.defaultPalette)
+//        이 방법이 이니셜라이져에서 State 변수를 초기화하는 올바른 방법이다. 이 State Struct를 직접적으로 setting 함으로써.
+    }
+    
     var body: some View {
         VStack {
             HStack {
@@ -26,10 +33,9 @@ struct EmojiArtDocumentView: View {
                         }
                     }
                 }
-                .onAppear { self.chosenPalette = self.document.defaultPalette }
+//                .onAppear { self.chosenPalette = self.document.defaultPalette }
+//                위에 이니셜라이저에서 처리해주므로 주석처리. onAppear도 괜찮게 동작하지만 위에 방법이 좀 더 property wrapper에 대해 교육적임.
             }
-//            패딩 삭제.
-//                .padding(.horizontal)
             GeometryReader { geometry in
                 ZStack {
                     Color.white.overlay(
@@ -75,7 +81,6 @@ struct EmojiArtDocumentView: View {
     }
     
     var isLoading: Bool {
-        // emoji만 뜨는 것을 방지하기 위한 변수.
         document.backgroundURL != nil && document.backgroundImage == nil
     }
     
@@ -134,7 +139,7 @@ struct EmojiArtDocumentView: View {
                     }
                     self.selectedEmojis.insert(emoji)
                 } else {
-                    if self.isSelected(emoji) {  // 선택된 emoji 중에 드래그할 emoji가 포함되어 있는지 확인하는 조건문.
+                    if self.isSelected(emoji) {  
                         self.selectedEmojis.forEach { emoji in
                             self.document.moveEmoji(emoji, by: finalDragGestureValue.translation / self.zoomScale)
                         }
