@@ -12,7 +12,6 @@ struct EmojiArtApp: App {
     var body: some Scene {
         WindowGroup {
             let store = EmojiArtDocumentStore()
-//            let store = readyStore()
             EmojiArtDocumentChooser().environmentObject(store)
 //            EmojiArtDocumentView(document: EmojiArtDocument())
         }

@@ -73,10 +73,8 @@ struct EmojiArtDocumentView: View {
                     location = CGPoint(x: location.x / self.zoomScale, y: location.y / self.zoomScale)
                     return self.drop(providers: providers, at: location)
                 }
-                // 아이폰에서 이미지 추가할때 사용하기 위한 버튼
                 .navigationBarItems(trailing: Button(action: {
                     if let url = UIPasteboard.general.url, url != self.document.backgroundURL {
-//                        self.document.backgroundURL = url
                         self.confirmBackgroundPaste = true
                     } else {
                         self.explainBackgroundPaste = true
@@ -84,24 +82,16 @@ struct EmojiArtDocumentView: View {
                 }, label: {
                     Image(systemName: "doc.on.clipboard")
                         .imageScale(.large)
-//                    state var confirmBackgroundPaste를 사용하기 위해 다른 alert을 사용.
-//                    *Alert에 대해 중요한 것은 Alert을 같은 뷰에 두개 동시에 사용할 수 없다.
-//                    그래서 Bool인 confirmBackgroundPaste를 만들어 최상위 VStack에 alert을 걸어놨다.
-//                    하지만 이보다 더 좋은 방법은 두개의 Bool을 만드는 것이 아니라 enum으로 만들어서 하나에 alert으로 하는 편이 좋다.
-//                    하지만 일단 이 수업에서는 이런 방식으로 함.
                         .alert(isPresented: self.$explainBackgroundPaste) {
                             return Alert(
                                 title: Text("Paste Background"),
                                 message: Text("Copy the URL of an image to the clip board and touch this button to make it the background of your document."),
                                 dismissButton: .default(Text("OK"))
-//                                dismissButton: .default(Text("OK")/*, action: { 클로저가 올 수 있지만 해야할 것이 없기 때문에 label만 넣어준다. } */)
                             )
-                            // 위에 하드코딩된 메세지들은 internationalizable(국제화)이 되어야 한다.
                         }
                 }))
             }
             .zIndex(-1)
-            // 이것은 image를 확대했을 때 palette 부분의 tap을 가로채지 않게 하기 위한 ViewModifier.
         }
         .alert(isPresented: self.$confirmBackgroundPaste) {
             Alert(
@@ -122,8 +112,6 @@ struct EmojiArtDocumentView: View {
         document.backgroundURL != nil && document.backgroundImage == nil
     }
     
-//    @State private var steadyStateZoomScale: CGFloat = 1.0
-//    아이폰에서 문서마다 zoomscale값과 panoffset을 저장하기 위해 ViewModel로 옮김. 그래서 주석처리.
     @GestureState private var gestureZoomScale: CGFloat = 1.0
 
     private var zoomScale: CGFloat {
@@ -145,8 +133,6 @@ struct EmojiArtDocumentView: View {
             }
     }
     
-//    @State private var steadyStatePanOffset: CGSize = .zero
-//    아이폰에서 문서마다 zoomscale값과 panoffset을 저장하기 위해 ViewModel로 옮김. 그래서 주석처리.
     @GestureState private var gesturePanOffset: CGSize = .zero
     
     private var panOffset: CGSize {
@@ -227,7 +213,7 @@ struct EmojiArtDocumentView: View {
     
     private func zoomToFit(_ image: UIImage?, in size: CGSize) {
 //        if let image = image, image.size.width > 0, image.size.height > 0 {
-//        아이폰에서 이미지가 없어지는 버그로 인해 밑 조건으로 변경함.
+//        강의에서는 아이폰에서 이미지가 없어지는 버그로 인해 밑 조건으로 변경함.
         if let image = image, image.size.width > 0, image.size.height > 0, size.height > 0, size.width > 0{
             let hZoom = size.width / image.size.width
             let vZoom = size.height / image.size.height
