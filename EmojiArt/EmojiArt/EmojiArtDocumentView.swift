@@ -15,9 +15,7 @@ struct EmojiArtDocumentView: View {
     
     init(document: EmojiArtDocument) {
         self.document = document
-//        self.chosenPalette = self.document.defaultPalette     // 컴파일 에러는 없지만 실행 x
         _chosenPalette = State(wrappedValue: self.document.defaultPalette)
-//        이 방법이 이니셜라이져에서 State 변수를 초기화하는 올바른 방법이다. 이 State Struct를 직접적으로 setting 함으로써.
     }
     
     var body: some View {
@@ -33,8 +31,6 @@ struct EmojiArtDocumentView: View {
                         }
                     }
                 }
-//                .onAppear { self.chosenPalette = self.document.defaultPalette }
-//                위에 이니셜라이저에서 처리해주므로 주석처리. onAppear도 괜찮게 동작하지만 위에 방법이 좀 더 property wrapper에 대해 교육적임.
             }
             GeometryReader { geometry in
                 ZStack {
@@ -50,7 +46,7 @@ struct EmojiArtDocumentView: View {
                         ForEach(self.document.emojis) { emoji in
                             Text(emoji.text)
                                 .border(self.isSelected(emoji) ? Color.black : Color.clear)
-                                .font(animatableWithSize: emoji.fontSize * (self.isSelected(emoji) ? steadyStateZoomScale * gestureZoomScale : self.zoomScale))
+                                .font(animatableWithSize: emoji.fontSize * (self.isSelected(emoji) ? self.document.steadyStateZoomScale * gestureZoomScale : self.zoomScale))
                                 .position(
                                     self.isSelected(emoji)
                                     ? self.position(for: emoji, in: geometry.size, duringGesture: gestureEmojiOffset)
@@ -66,7 +62,8 @@ struct EmojiArtDocumentView: View {
                 .gesture(self.panGesture())
                 .gesture(self.zoomGesture())
                 .onReceive(self.document.$backgroundImage) { image in
-                    self.zoomToFit(image, in: geometry.size)
+//                    self.zoomToFit(image, in: geometry.size)
+//                    지금 실행하는 버전은 zoomToFit에 버그가 없기 때문에 zoomToFit이 잘 실행된다. 그래서 주석처리.
                 }
                 .edgesIgnoringSafeArea([.horizontal, .bottom])
                 .onDrop(of: ["public.image", "public.text"], isTargeted: nil) { providers, location in
@@ -76,19 +73,61 @@ struct EmojiArtDocumentView: View {
                     location = CGPoint(x: location.x / self.zoomScale, y: location.y / self.zoomScale)
                     return self.drop(providers: providers, at: location)
                 }
+                // 아이폰에서 이미지 추가할때 사용하기 위한 버튼
+                .navigationBarItems(trailing: Button(action: {
+                    if let url = UIPasteboard.general.url, url != self.document.backgroundURL {
+//                        self.document.backgroundURL = url
+                        self.confirmBackgroundPaste = true
+                    } else {
+                        self.explainBackgroundPaste = true
+                    }
+                }, label: {
+                    Image(systemName: "doc.on.clipboard")
+                        .imageScale(.large)
+//                    state var confirmBackgroundPaste를 사용하기 위해 다른 alert을 사용.
+//                    *Alert에 대해 중요한 것은 Alert을 같은 뷰에 두개 동시에 사용할 수 없다.
+//                    그래서 Bool인 confirmBackgroundPaste를 만들어 최상위 VStack에 alert을 걸어놨다.
+//                    하지만 이보다 더 좋은 방법은 두개의 Bool을 만드는 것이 아니라 enum으로 만들어서 하나에 alert으로 하는 편이 좋다.
+//                    하지만 일단 이 수업에서는 이런 방식으로 함.
+                        .alert(isPresented: self.$explainBackgroundPaste) {
+                            return Alert(
+                                title: Text("Paste Background"),
+                                message: Text("Copy the URL of an image to the clip board and touch this button to make it the background of your document."),
+                                dismissButton: .default(Text("OK"))
+//                                dismissButton: .default(Text("OK")/*, action: { 클로저가 올 수 있지만 해야할 것이 없기 때문에 label만 넣어준다. } */)
+                            )
+                            // 위에 하드코딩된 메세지들은 internationalizable(국제화)이 되어야 한다.
+                        }
+                }))
             }
+            .zIndex(-1)
+            // 이것은 image를 확대했을 때 palette 부분의 tap을 가로채지 않게 하기 위한 ViewModifier.
+        }
+        .alert(isPresented: self.$confirmBackgroundPaste) {
+            Alert(
+                title: Text("Paste Background"),
+                message: Text("Replace your background with \(UIPasteboard.general.url?.absoluteString ?? "nothing")?."),
+                primaryButton: .default(Text("OK")) {
+                    self.document.backgroundURL = UIPasteboard.general.url
+                },
+                secondaryButton: .cancel()
+            )
         }
     }
+    
+    @State private var explainBackgroundPaste = false
+    @State private var confirmBackgroundPaste = false
     
     var isLoading: Bool {
         document.backgroundURL != nil && document.backgroundImage == nil
     }
     
-    @State private var steadyStateZoomScale: CGFloat = 1.0
+//    @State private var steadyStateZoomScale: CGFloat = 1.0
+//    아이폰에서 문서마다 zoomscale값과 panoffset을 저장하기 위해 ViewModel로 옮김. 그래서 주석처리.
     @GestureState private var gestureZoomScale: CGFloat = 1.0
 
     private var zoomScale: CGFloat {
-        steadyStateZoomScale * (self.selectedEmojis.isEmpty ? gestureZoomScale : 1.0)
+        document.steadyStateZoomScale * (self.selectedEmojis.isEmpty ? gestureZoomScale : 1.0)
     }
     private func zoomGesture () -> some Gesture {
         MagnificationGesture()
@@ -97,7 +136,7 @@ struct EmojiArtDocumentView: View {
             }
             .onEnded { finalGestureScale in
                 if self.selectedEmojis.isEmpty {
-                    self.steadyStateZoomScale *= finalGestureScale
+                    self.document.steadyStateZoomScale *= finalGestureScale
                 } else {
                     self.selectedEmojis.forEach { emoji in
                         self.document.scaleEmoji(emoji, by: finalGestureScale)
@@ -106,11 +145,12 @@ struct EmojiArtDocumentView: View {
             }
     }
     
-    @State private var steadyStatePanOffset: CGSize = .zero
+//    @State private var steadyStatePanOffset: CGSize = .zero
+//    아이폰에서 문서마다 zoomscale값과 panoffset을 저장하기 위해 ViewModel로 옮김. 그래서 주석처리.
     @GestureState private var gesturePanOffset: CGSize = .zero
     
     private var panOffset: CGSize {
-        (steadyStatePanOffset + gesturePanOffset) * zoomScale
+        (document.steadyStatePanOffset + gesturePanOffset) * zoomScale
     }
     
     private func panGesture() -> some Gesture {
@@ -119,7 +159,7 @@ struct EmojiArtDocumentView: View {
                 gesturePanOffset = latestDragGestureValue.translation / self.zoomScale
             }
             .onEnded { finalDragGestureValue in
-                self.steadyStatePanOffset = self.steadyStatePanOffset + (finalDragGestureValue.translation / self.zoomScale)
+                self.document.steadyStatePanOffset = self.document.steadyStatePanOffset + (finalDragGestureValue.translation / self.zoomScale)
             }
     }
     
@@ -186,11 +226,13 @@ struct EmojiArtDocumentView: View {
     }
     
     private func zoomToFit(_ image: UIImage?, in size: CGSize) {
-        if let image = image, image.size.width > 0, image.size.height > 0 {
+//        if let image = image, image.size.width > 0, image.size.height > 0 {
+//        아이폰에서 이미지가 없어지는 버그로 인해 밑 조건으로 변경함.
+        if let image = image, image.size.width > 0, image.size.height > 0, size.height > 0, size.width > 0{
             let hZoom = size.width / image.size.width
             let vZoom = size.height / image.size.height
-            self.steadyStatePanOffset = .zero
-            self.steadyStateZoomScale = min(hZoom, vZoom)
+            self.document.steadyStatePanOffset = .zero
+            self.document.steadyStateZoomScale = min(hZoom, vZoom)
         }
     }
     

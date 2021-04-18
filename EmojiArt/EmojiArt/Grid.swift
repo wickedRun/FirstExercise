@@ -13,7 +13,7 @@ extension Grid where Item: Identifiable, ID == Item.ID {
     }
 }
 
-struct Grid<Item, ID, ItemView>: View where /* Item: Identifiable, */ID: Hashable, ItemView: View {
+struct Grid<Item, ID, ItemView>: View where ID: Hashable, ItemView: View {
     private var items: [Item]
     private var id: KeyPath<Item, ID>
     private var viewForItem: (Item) -> ItemView
@@ -39,20 +39,13 @@ struct Grid<Item, ID, ItemView>: View where /* Item: Identifiable, */ID: Hashabl
     }
     
     private func body(for item: Item, in layout: GridLayout) -> some View {
-//        KeyPath(ID)를 이용할 것이기 때문에 바로 밑에 줄 주석처리
-//        let index = items.firstIndex(matching: item)!
         let index = items.firstIndex(where: { item[keyPath: id] == $0[keyPath: id] })
-        //    nil일 경우 런타임오류가 안나게 하기 위해서 하는 방법이지만 할 필요가 없다.
-        return Group {      // Group은 그룹화하는 ViewBuilder임. 더 알고 싶으면 documentation 참조.
-            if index != nil {       // nil이면 빈 뷰를 리턴함. 하지만 강의에서는 nil일 경우를 don't care함.
+        return Group {
+            if index != nil {
                 viewForItem(item)
                     .frame(width: layout.itemSize.width, height: layout.itemSize.height)
                     .position(layout.location(ofItemAt: index!))
             }
         }
     }
-    //        위 코드와 자리바꿈 수업에선 위에 코드임.
-    //        return viewForItem(item)
-    //            .frame(width: layout.itemSize.width, height: layout.itemSize.height)
-    //            .position(layout.location(ofItemAt: index))
 }
