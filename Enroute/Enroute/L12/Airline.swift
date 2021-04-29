@@ -10,7 +10,6 @@ import CoreData
 import Combine
 
 extension Airline: /*Identifiable,*/ Comparable {
-//    ??을 사용해서 nil 되면 안되는 것에 기본 값을 넣어준다. 또한 _를 사용하는 필드는 nil 값 x.
     var code: String {
         get { code_! }  // TODO: maybe protect against when app ships?
         set { code_ = newValue }

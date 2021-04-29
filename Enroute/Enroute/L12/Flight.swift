@@ -10,7 +10,6 @@ import CoreData
 import Combine
 
 extension Flight {
-//    ??을 사용해서 nil 되면 안되는 것에 기본 값을 넣어준다. 
     var arrival: Date {
         get { arrival_ ?? Date(timeIntervalSinceReferenceDate: 0) }
         set { arrival_ = newValue }
@@ -39,7 +38,7 @@ extension Flight {
 extension Flight {
     static func fetchRequest(_ predicate: NSPredicate) -> NSFetchRequest<Flight> {
         let request = NSFetchRequest<Flight>(entityName: "Flight")
-        request.sortDescriptors = [NSSortDescriptor(key: "arrival", ascending: true)]
+        request.sortDescriptors = [NSSortDescriptor(key: "arrival_", ascending: true)]
         request.predicate = predicate
         return request
     }
