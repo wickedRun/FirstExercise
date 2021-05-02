@@ -152,6 +152,7 @@ extension String
 {
     // returns ourself but with numbers appended to the end
     // if necessary to make ourself unique with respect to those other Strings
+    //    func uniqued(withRespectTo otherStrings: String) -> String 이였던 것을 아래 처럼 바꿈.
     func uniqued<StringCollection>(withRespectTo otherStrings: StringCollection) -> String
         where StringCollection: Collection, StringCollection.Element == String {
         var unique = self

@@ -21,7 +21,17 @@ class EmojiArtDocumentStore: ObservableObject
     }
     
     func setName(_ name: String, for document: EmojiArtDocument) {
-        documentNames[document] = name
+        // 이름을 변경했을 때 EditMode에서는 바뀐것 처럼 보이지만 실제(EditMode.inactive)로는 바뀌지 않음. 동일한 이름이 있다면.
+        // 데모이기 때문에 이렇게 냅둠, 여기서 추가적으로 Alert 띄워주는게 좋다고 함.
+        if let url = directory?.appendingPathComponent(name) {
+            if !documentNames.values.contains(name) {
+                removeDocument(document)
+                document.url = url
+                documentNames[document] = name
+            }
+        } else {
+            documentNames[document] = name
+        }
     }
     
     var documents: [EmojiArtDocument] {
@@ -29,10 +39,20 @@ class EmojiArtDocumentStore: ObservableObject
     }
     
     func addDocument(named name: String = "Untitled") {
-        documentNames[EmojiArtDocument()] = name
+        let uniqueName = name.uniqued(withRespectTo: documentNames.values)
+        let document: EmojiArtDocument
+        if let url = directory?.appendingPathComponent(uniqueName) {
+            document = EmojiArtDocument(url: url)
+        } else {
+            document = EmojiArtDocument()
+        }
+        documentNames[document] = uniqueName
     }
 
     func removeDocument(_ document: EmojiArtDocument) {
+        if let name = documentNames[document], let url = directory?.appendingPathComponent(name) {
+            try? FileManager.default.removeItem(at: url)
+        }
         documentNames[document] = nil
     }
     
@@ -46,6 +66,22 @@ class EmojiArtDocumentStore: ObservableObject
         documentNames = Dictionary(fromPropertyList: UserDefaults.standard.object(forKey: defaultsKey))
         autosave = $documentNames.sink { names in
             UserDefaults.standard.set(names.asPropertyList, forKey: defaultsKey)
+        }
+    }
+    
+    private var directory: URL?
+    
+    init(directory: URL) {
+        self.name = directory.lastPathComponent
+        self.directory = directory
+        do {
+            let documents = try FileManager.default.contentsOfDirectory(atPath: directory.path)
+            for document in documents {
+                let emojiArtDocument = EmojiArtDocument(url: directory.appendingPathComponent(document))
+                self.documentNames[emojiArtDocument] = document
+            }
+        } catch {
+            print("EmojiArtDocumentStore: couldn't create store from directory \(directory): \(error.localizedDescription)")
         }
     }
 }

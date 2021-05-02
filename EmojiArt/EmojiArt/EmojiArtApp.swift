@@ -11,7 +11,9 @@ import SwiftUI
 struct EmojiArtApp: App {
     var body: some Scene {
         WindowGroup {
-            let store = EmojiArtDocumentStore()
+//            let store = EmojiArtDocumentStore()
+            let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let store = EmojiArtDocumentStore(directory: url)
             EmojiArtDocumentChooser().environmentObject(store)
 //            EmojiArtDocumentView(document: EmojiArtDocument())
         }
