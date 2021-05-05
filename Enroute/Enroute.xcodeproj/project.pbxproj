@@ -11,6 +11,7 @@
 		28C8A5BF2632C9A40090CA1B /* Flight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C8A5BC2632C9A40090CA1B /* Flight.swift */; };
 		28C8A5C02632C9A40090CA1B /* Airport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C8A5BD2632C9A40090CA1B /* Airport.swift */; };
 		28C8A5C42632CA9F0090CA1B /* Enroute.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 28C8A5C22632CA9E0090CA1B /* Enroute.xcdatamodeld */; };
+		28F4F0D62640154A00FFC98C /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F4F0D52640154A00FFC98C /* MapView.swift */; };
 		DA47A9B32469D48100C8E13C /* Airlines.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA47A9B12469D48100C8E13C /* Airlines.swift */; };
 		DA47A9B42469D48100C8E13C /* Airports.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA47A9B22469D48100C8E13C /* Airports.swift */; };
 		DA47A9B62469D48900C8E13C /* FlightFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA47A9B52469D48900C8E13C /* FlightFetcher.swift */; };
@@ -35,6 +36,7 @@
 		28C8A5BC2632C9A40090CA1B /* Flight.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Flight.swift; sourceTree = "<group>"; };
 		28C8A5BD2632C9A40090CA1B /* Airport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Airport.swift; sourceTree = "<group>"; };
 		28C8A5C32632CA9E0090CA1B /* Enroute.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Enroute.xcdatamodel; sourceTree = "<group>"; };
+		28F4F0D52640154A00FFC98C /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		DA47A9B12469D48100C8E13C /* Airlines.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Airlines.swift; sourceTree = "<group>"; };
 		DA47A9B22469D48100C8E13C /* Airports.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Airports.swift; sourceTree = "<group>"; };
 		DA47A9B52469D48900C8E13C /* FlightFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightFetcher.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 			children = (
 				DAB658AA2467944B00A0F2BB /* FlightsEnrouteView.swift */,
 				EC48CF55246B289C00F59507 /* FilterFlights.swift */,
+				28F4F0D52640154A00FFC98C /* MapView.swift */,
 				DA47A9B52469D48900C8E13C /* FlightFetcher.swift */,
 				DA47A9B22469D48100C8E13C /* Airports.swift */,
 				DA47A9B12469D48100C8E13C /* Airlines.swift */,
@@ -222,6 +225,7 @@
 				28C8A5C42632CA9F0090CA1B /* Enroute.xcdatamodeld in Sources */,
 				DA47A9B32469D48100C8E13C /* Airlines.swift in Sources */,
 				DA47A9B42469D48100C8E13C /* Airports.swift in Sources */,
+				28F4F0D62640154A00FFC98C /* MapView.swift in Sources */,
 				28C8A5C02632C9A40090CA1B /* Airport.swift in Sources */,
 				DAB658A62467944B00A0F2BB /* SceneDelegate.swift in Sources */,
 				EC48CF56246B289C00F59507 /* FilterFlights.swift in Sources */,
