@@ -24,6 +24,7 @@
 		28D445A3262530A300B669CB /* Spinning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D445A2262530A300B669CB /* Spinning.swift */; };
 		28D445A6262564F700B669CB /* PaletteChooser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D445A5262564F700B669CB /* PaletteChooser.swift */; };
 		28D445A9262570E600B669CB /* EmojiArtDocumentPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D445A8262570E600B669CB /* EmojiArtDocumentPalette.swift */; };
+		28F4F0D82642908500FFC98C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F4F0D72642908500FFC98C /* ImagePicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		28D445A2262530A300B669CB /* Spinning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinning.swift; sourceTree = "<group>"; };
 		28D445A5262564F700B669CB /* PaletteChooser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteChooser.swift; sourceTree = "<group>"; };
 		28D445A8262570E600B669CB /* EmojiArtDocumentPalette.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiArtDocumentPalette.swift; sourceTree = "<group>"; };
+		28F4F0D72642908500FFC98C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 				28A22CC1260E5FBA00F6FF03 /* EmojiArt.swift */,
 				28A22CBD260DC5E000F6FF03 /* EmojiArtDocument.swift */,
 				28A22CAF260DC58700F6FF03 /* EmojiArtDocumentView.swift */,
+				28F4F0D72642908500FFC98C /* ImagePicker.swift */,
 				28D445A5262564F700B669CB /* PaletteChooser.swift */,
 				28C8A5A8262972C60090CA1B /* EmojiArtDocumentStore.swift */,
 				28D445A8262570E600B669CB /* EmojiArtDocumentPalette.swift */,
@@ -190,6 +193,7 @@
 				28C8A5B1262C594D0090CA1B /* EditableText.swift in Sources */,
 				28C8A5A9262972C60090CA1B /* EmojiArtDocumentStore.swift in Sources */,
 				28D445A6262564F700B669CB /* PaletteChooser.swift in Sources */,
+				28F4F0D82642908500FFC98C /* ImagePicker.swift in Sources */,
 				28C8A5A126283EAA0090CA1B /* GridLayout.swift in Sources */,
 				28C8A5A226283EAA0090CA1B /* Grid.swift in Sources */,
 			);

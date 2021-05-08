@@ -73,7 +73,7 @@ struct EmojiArtDocumentView: View {
                     location = CGPoint(x: location.x / self.zoomScale, y: location.y / self.zoomScale)
                     return self.drop(providers: providers, at: location)
                 }
-                .navigationBarItems(trailing: Button(action: {
+                .navigationBarItems(leading: self.pickImage, trailing: Button(action: {
                     if let url = UIPasteboard.general.url, url != self.document.backgroundURL {
                         self.confirmBackgroundPaste = true
                     } else {
@@ -103,6 +103,37 @@ struct EmojiArtDocumentView: View {
                 secondaryButton: .cancel()
             )
         }
+    }
+    
+    @State private var showImagePicker = false
+    @State private var imagePickerSourceType = UIImagePickerController.SourceType.photoLibrary
+    
+    var pickImage: some View {
+        HStack {
+            Image(systemName: "photo").imageScale(.large).foregroundColor(.accentColor).onTapGesture {
+                self.imagePickerSourceType = .photoLibrary
+                self.showImagePicker = true
+            }
+            if UIImagePickerController.isSourceTypeAvailable(.camera) { // 충돌로 인해 강제종료를 막기위한 if 문.
+                Image(systemName: "camera").imageScale(.large).foregroundColor(.accentColor).onTapGesture {
+                    self.imagePickerSourceType = .camera
+                    self.showImagePicker = true
+                }
+            }
+        }
+        .sheet(isPresented: $showImagePicker) {
+            ImagePicker(sourceType: self.imagePickerSourceType) { image in
+                if image != nil {
+                    // 백그라운드에서 하는 이유는 이 클로져가 좋지 않을 때 호출되는 것을 방지하기위해
+                    // 모든것이 안정되고 나서 하기 위해 백그라운드에서 한다.
+                    DispatchQueue.main.async {
+                        self.document.backgroundURL = image!.storeInFilesystem()
+                    }
+                }
+                self.showImagePicker = false
+            }
+        }
+        
     }
     
     @State private var explainBackgroundPaste = false
